@@ -51,6 +51,9 @@ for (var i = 0; i < contacts.length; i++) {
     if (str) str += "\n";
     str += columns.join("\t");
 }
+if(contacts.length == 0){
+    str += [name, /*url,*/ '', '', '', '', '', address, city, state, zip, country, '', '', '', '', '', mascot].join("\t");
+}
 
 var textarea = $('<textarea readonly="readonly" style="position:absolute;top:0;left:0;width:350px;height:175px;"></textarea>').val(str);
 $('body').append(textarea);

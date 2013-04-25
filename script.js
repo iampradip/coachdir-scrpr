@@ -1,6 +1,3 @@
-// http://ecoachesdirectory.com/subscriber/school_view.php?ID=4759
-// modification 23-04-2013 23:15 GMT+0530 iampradip@github
-
 var name = school.name,
 	address = school.address,
 	city = school.city,
@@ -30,8 +27,9 @@ $('#contacts1 tr').each(function(i, tr) {
         email = $(tds[2]).find('a[href]').attr('href').substr('mailto:'.length),
         phone = $.trim($(tds[3]).text()) || athleticPhone || officePhone,
         isFootball = position && position.toLowerCase().indexOf('football') !== -1,
+		isLacrosse = position && position.toLowerCase().indexOf('lacrosse') != -1,
         isAD = position && position.toLowerCase().indexOf('athletic director') !== -1;
-    if (isFootball /*|| isAD*/) {
+    if (isFootball || isLacrosse /*|| isAD*/) {
         var contact = {
             name: name, title: position, email: email, phone: phone
         };

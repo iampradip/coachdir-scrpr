@@ -38,10 +38,13 @@ $('#contacts1 tr').each(function(i, tr) {
     if (isFootball) {
 		footballCoaches.push(contact);
     }
-	if(isLacrosse){
-		if(isForBoys){
+	if(isLacrosse) {
+		if(isForBoys) {
 			boysLacrosseCoaches.push(contact);
+		} else if(isForGirls) {
+			girlsLacrosseCoaches.push(contact);
 		} else {
+			boysLacrosseCoaches.push(contact);
 			girlsLacrosseCoaches.push(contact);
 		}
 	}
@@ -53,21 +56,21 @@ for (var i = 0; true; i++) {
 	var columns = [];
 	columns.push(name, officePhone || athleticPhone, city, state);
 	
-	if(!footballCoaches[i] && !boysLacrosseCoaches[i] && !girlsLacrosseCoaches[i]){
+	if(!footballCoaches[i] && !boysLacrosseCoaches[i] && !girlsLacrosseCoaches[i]) {
 		break;
 	}
 	
-	if(footballCoaches[i]){
+	if(footballCoaches[i]) {
 		columns.push(footballCoaches[i].name, footballCoaches[i].email);
 	} else {
 		columns.push('', '');
 	}
-	if(boysLacrosseCoaches[i]){
+	if(boysLacrosseCoaches[i]) {
 		columns.push(boysLacrosseCoaches[i].name, boysLacrosseCoaches[i].email);
 	} else {
 		columns.push('', '');
 	}
-	if(girlsLacrosseCoaches[i]){
+	if(girlsLacrosseCoaches[i]) {
 		columns.push(girlsLacrosseCoaches[i].name, girlsLacrosseCoaches[i].email);
 	} else {
 		columns.push('', '');
@@ -80,7 +83,7 @@ if(str.length == 0){
     str += [name, /*url,*/ '', officePhone || athleticPhone, city, state, '', '', '', '', '', ''].join("\t");
 }
 
-str = ["School", "School xPhone xNo", "City", "State", "Football coach", "Football coach Email", "Boys Lacrosse", "Boys Lacrosse email", "Girls Lacrosse", "Girls Lacrosse email"].join("\t") + "\n" + str;
+//str = ["School", "School xPhone xNo", "City", "State", "Football coach", "Football coach Email", "Boys Lacrosse", "Boys Lacrosse email", "Girls Lacrosse", "Girls Lacrosse email"].join("\t") + "\n" + str;
 
 var textarea = $('<textarea readonly="readonly" style="position:absolute;top:0;left:0;width:350px;height:175px;"></textarea>').val(str);
 $('body').append(textarea);

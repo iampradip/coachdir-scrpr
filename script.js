@@ -10,14 +10,16 @@ $('#school1 tr').each(function(i, el) {
     var key = $.trim($(el).find('strong').text()),
         val = $.trim($(el).find('td[colspan]').text());
     dictSchool[key] = val;
-})
+});
 
 var officePhone = dictSchool['Office Phone:'],
     athleticPhone = dictSchool['Athletic Phone:'],
     mascot = dictSchool['Mascot Name:'],
     url = dictSchool['Athletic Website:'] || dictSchool['School Website:'];
 
-var contacts = [], contactAD = null;
+var footballCoaches = [];
+var boysLacrosseCoaches = [];
+var girlsLacrosseCoaches = [];
 // pull out contacts with certain titles
 $('#contacts1 tr').each(function(i, tr) {
     var tds = $(tr).find('td');
@@ -28,30 +30,57 @@ $('#contacts1 tr').each(function(i, tr) {
         phone = $.trim($(tds[3]).text()) || athleticPhone || officePhone,
         isFootball = position && position.toLowerCase().indexOf('football') !== -1,
 		isLacrosse = position && position.toLowerCase().indexOf('lacrosse') != -1,
-        isAD = position && position.toLowerCase().indexOf('athletic director') !== -1;
-    if (isFootball || isLacrosse /*|| isAD*/) {
-        var contact = {
-            name: name, title: position, email: email, phone: phone
-        };
-        if (isAD) {
-            contactAD = contact; // we want to wait to put AD contact last
-        } else {
-            contacts.push(contact);
-        }
+		isForBoys = position && position.toLowerCase().indexOf('boys') != -1,
+		isForGirls = position && position.toLowerCase().indexOf('girls') != -1;
+	var contact = {
+		name: name, title: position, email: email, phone: phone
+	};
+    if (isFootball) {
+		footballCoaches.push(contact);
     }
+	if(isLacrosse){
+		if(isForBoys){
+			boysLacrosseCoaches.push(contact);
+		} else {
+			girlsLacrosseCoaches.push(contact);
+		}
+	}
 });
-if (contactAD) contacts.push(contactAD);
+//if (contactAD) contacts.push(contactAD);
 
 var str = '';
-for (var i = 0; i < contacts.length; i++) {
-    contact = contacts[i];
-    var columns = [name, /*url,*/ '', contact.email, contact.phone, contact.name, contact.title, address, city, state, zip, country, '', '', '', '', '', mascot];
+for (var i = 0; true; i++) {
+	var columns = [];
+	columns.push(name, officePhone || athleticPhone, city, state);
+	
+	if(!footballCoaches[i] && !boysLacrosseCoaches[i] && !girlsLacrosseCoaches[i]){
+		break;
+	}
+	
+	if(footballCoaches[i]){
+		columns.push(footballCoaches[i].name, footballCoaches[i].email);
+	} else {
+		columns.push('', '');
+	}
+	if(boysLacrosseCoaches[i]){
+		columns.push(boysLacrosseCoaches[i].name, boysLacrosseCoaches[i].email);
+	} else {
+		columns.push('', '');
+	}
+	if(girlsLacrosseCoaches[i]){
+		columns.push(girlsLacrosseCoaches[i].name, girlsLacrosseCoaches[i].email);
+	} else {
+		columns.push('', '');
+	}
+	
     if (str) str += "\n";
     str += columns.join("\t");
 }
-if(contacts.length == 0){
-    str += [name, /*url,*/ '', athleticPhone || officePhone, '', '', '', address, city, state, zip, country, '', '', '', '', '', mascot].join("\t");
+if(str.length == 0){
+    str += [name, /*url,*/ '', officePhone || athleticPhone, city, state, '', '', '', '', '', ''].join("\t");
 }
+
+str = ["School", "School xPhone xNo", "City", "State", "Football coach", "Football coach Email", "Boys Lacrosse", "Boys Lacrosse email", "Girls Lacrosse", "Girls Lacrosse email"].join("\t") + "\n" + str;
 
 var textarea = $('<textarea readonly="readonly" style="position:absolute;top:0;left:0;width:350px;height:175px;"></textarea>').val(str);
 $('body').append(textarea);

@@ -1,4 +1,7 @@
 var schoolName = school.name;
+var schoolCity = school.city;
+var schoolZip = school.zip;
+var schoolState = school.state;
 
 var dictSchool = {};
 $('#school1 tr').each(function(i, el) {
@@ -11,6 +14,8 @@ var officePhone = dictSchool['Office Phone:'];
 var athleticPhone = dictSchool['Athletic Phone:'];
 var schoolMascot = dictSchool['Mascot Name:'];
 var schoolPhone = athleticPhone || officePhone;
+var schoolConference = dictSchool["Conference"];
+var schoolClass = dictSchool["Class"];
 
 var lines = [];
 $('#contacts1 tr').each(function(i, tr) {
@@ -26,11 +31,15 @@ $('#contacts1 tr').each(function(i, tr) {
 		lines.push(
 			[
 				schoolName,
+				schoolCity + ", " + schoolZip,
+				schoolState, 
 				schoolPhone,
-				schoolMascot,
 				staffPosition,
 				staffName,
-				staffEmail
+				staffEmail,
+				schoolMascot,
+				schoolConference,
+				schoolClass
 			].join("\t")
 		);
 	}
